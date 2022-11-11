@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
+import Notiflix from 'notiflix';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -8,6 +9,15 @@ const contactsSlice = createSlice({
     addContact: {
       reducer: (state, { payload }) => {
         state.push(payload);
+        Notiflix.Report.success('Super !', ` New contact added!`, 'Close', {
+          svgSize: '200px',
+          titleFontSize: '24px',
+          messageFontSize: '20px',
+          buttonFontSize: '16px',
+          width: '300px',
+          backOverlay: true,
+          backOverlayClickToClose: true,
+        });
       },
       prepare: data => {
         return {
