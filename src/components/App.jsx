@@ -22,7 +22,7 @@ import './phonebook/Phonebook.css';
   
     return (
       <>
-      <h1>Phonebook</h1>
+      <h1 className='phonebook-title'>Phonebook</h1>
         <Phonebook/>
           <>
             <h2>Contacts :</h2>
