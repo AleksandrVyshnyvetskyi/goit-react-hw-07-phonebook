@@ -1,37 +1,52 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
-import Notiflix from 'notiflix';
+import {
+  addContact,
+  fetchContacts,
+  removeContact,
+} from 'redux/operations/operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: [],
-  reducers: {
-    addContact: {
-      reducer: (state, { payload }) => {
-        state.push(payload);
-        Notiflix.Report.success('Super !', ` New contact added!`, 'Close', {
-          svgSize: '200px',
-          titleFontSize: '24px',
-          messageFontSize: '20px',
-          buttonFontSize: '16px',
-          width: '300px',
-          backOverlay: true,
-          backOverlayClickToClose: true,
-        });
-      },
-      prepare: data => {
-        return {
-          payload: {
-            ...data,
-            id: nanoid(),
-          },
-        };
-      },
+  initialState: {
+    items: [],
+    isLoading: false,
+    error: null,
+  },
+  extraReducers: {
+    [fetchContacts.pending](state) {
+      state.isLoading = true;
     },
-    removeContact: (state, { payload }) =>
-      state.filter(({ id }) => id !== payload),
+    [fetchContacts.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
+    [fetchContacts.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [addContact.pending](state) {
+      state.isLoading = true;
+    },
+    [addContact.fulfilled](state, action) {
+      state.items.push(action.payload);
+    },
+    [addContact.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [removeContact.pending](state) {
+      state.isLoading = true;
+    },
+    [removeContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.items = state.items.filter(item => item.id !== action.payload);
+    },
+    [removeContact.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { addContact, removeContact } = contactsSlice.actions;
 export default contactsSlice.reducer;

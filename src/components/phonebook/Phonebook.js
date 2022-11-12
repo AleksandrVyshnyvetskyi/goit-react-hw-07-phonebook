@@ -1,21 +1,14 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
-import Notiflix from 'notiflix';
-import { addContact } from 'redux/contacts/contactsSlice';
-import filterContact from 'redux/contacts/contactsSelector';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/operations/operations';
 
 export default function Phonebook() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [gender, setGender] = useState('');
-  const contacts = useSelector(filterContact);
-  const dispatch = useDispatch();
 
-  const isDuplicate = contact => {
-    const result = contacts.find(item => item.name === contact.name);
-    return result;
-  };
+  const dispatch = useDispatch();
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -48,22 +41,6 @@ export default function Phonebook() {
     setName('');
     setNumber('');
     setGender('');
-    if (isDuplicate(contact)) {
-      return Notiflix.Report.warning(
-        'Oopps...',
-        `${contact.name} already exists 🤪 Try entering the full name.`,
-        'Close',
-        {
-          svgSize: '200px',
-          titleFontSize: '24px',
-          messageFontSize: '18px',
-          buttonFontSize: '16px',
-          width: '300px',
-          backOverlay: true,
-          backOverlayClickToClose: true,
-        }
-      );
-    }
     dispatch(addContact(contact));
   };
 

@@ -1,12 +1,11 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Notiflix from 'notiflix';
-import { removeContact } from 'redux/contacts/contactsSlice';
-import filterContact from 'redux/contacts/contactsSelector';
+import { removeContact } from 'redux/operations/operations';
 import man from './img/man.jpg';
 import woman from './img/woman.jpg';
 import nogender from './img/nogender.png';
 
-export default function PhonebookList() {
+export default function PhonebookList({ contactsList }) {
   function icon(gender) {
     if (gender === 'man') {
       return <img src={man} alt="contact-icon" className="gender-icon" />;
@@ -27,14 +26,15 @@ export default function PhonebookList() {
       backOverlayClickToClose: true,
     });
   };
+
   const dispatch = useDispatch();
-  const itemList = useSelector(filterContact);
-  const oneItemPhonebook = itemList.map(({ id, name, number, gender }) => {
+  const oneContacts = contactsList.map(({ id, name, number, gender }) => {
     return (
       <li key={id} className="list-item">
         {icon(gender)}
         <p>
           {name}: {number}
+          {''}
         </p>
         <button
           className="delete-btn"
@@ -47,5 +47,5 @@ export default function PhonebookList() {
     );
   });
 
-  return <ul>{oneItemPhonebook}</ul>;
+  return <ul>{oneContacts}</ul>;
 }

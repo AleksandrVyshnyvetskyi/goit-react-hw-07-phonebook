@@ -1,15 +1,13 @@
 import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
-import { getFilter } from 'redux/filter/filterSelector';
-import { filterContact } from 'redux/filter/filterSlice';
+import { useDispatch } from 'react-redux';
+import { setFilter } from 'redux/filter/filterSlice';
 
-export default function PhonebookFilter() {
+export default function PhonebookFilter({ filter }) {
   const filterId = nanoid();
-  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
   const filterChange = event => {
-    dispatch(filterContact(event.target.value));
+    dispatch(setFilter(event.target.value));
   };
 
   return (

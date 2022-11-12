@@ -1,16 +1,20 @@
-const filterContact = ({ phoneBook }) => {
-  const { contacts, filter } = phoneBook;
-  const filterNormolaze = filter.toLocaleLowerCase();
+export const getState = ({ contacts }) => ({
+  loading: contacts.loading,
+  error: contacts.error,
+});
+
+export const getFilteredContacts = ({ contacts, filter }) => {
   if (!filter) {
-    return contacts;
+    return contacts.items;
   }
 
-  const filterContacts = contacts.filter(({ name }) => {
-    const nameContactNormolaze = name.toLocaleLowerCase();
-    const resultFilter = nameContactNormolaze.includes(filterNormolaze);
-    return resultFilter;
+  const normalizedFilter = filter.toLocaleLowerCase();
+  const filteredContacts = contacts.items.filter(({ name }) => {
+    const normalizedName = name.toLocaleLowerCase();
+    const result = normalizedName.includes(normalizedFilter);
+    return result;
   });
-  return filterContacts;
+  return filteredContacts;
 };
 
-export default filterContact;
+export const getLoadingStatus = state => state.contacts.loading;
