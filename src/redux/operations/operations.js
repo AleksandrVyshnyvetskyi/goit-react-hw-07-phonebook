@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Notiflix from 'notiflix';
-import * as api from 'components/API/APIContactacts';
+import * as api from 'services/fetch';
 
 const isDublicate = ({ name }, contacts) => {
   const normalizedName = name.toLowerCase();
@@ -26,7 +26,7 @@ export const addContact = createAsyncThunk(
   'contacts/add',
   async (data, { rejectWithValue }) => {
     try {
-      const result = await api.addContact(data);
+      const result = await api.addContacts(data);
       Notiflix.Report.success('Super !', ` New contact added!`, 'Close', {
         svgSize: '200px',
         titleFontSize: '24px',
@@ -68,7 +68,7 @@ export const removeContact = createAsyncThunk(
   'contacts/remove',
   async (id, { rejectWithValue }) => {
     try {
-      await api.removeContact(id);
+      await api.removeContacts(id);
       return id;
     } catch (e) {
       return rejectWithValue(e);

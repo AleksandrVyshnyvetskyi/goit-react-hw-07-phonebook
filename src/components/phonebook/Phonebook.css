@@ -11,7 +11,7 @@
 #root {
     padding-top: 50px;
     background-color: #0d1e28;
-    background-image: url(./img/background.jpg);
+    background: linear-gradient( rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.6) ), url(./img/background.jpg);
     background-size: cover;
     color: #8bd3e1;
     font-size: 20px;
