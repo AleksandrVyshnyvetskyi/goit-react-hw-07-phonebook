@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Notiflix from 'notiflix';
-import * as api from 'services/fetch';
+import { instanceContacts } from 'services/fetch';
 
 const isDublicate = ({ name }, contacts) => {
   const normalizedName = name.toLowerCase();
@@ -10,11 +10,26 @@ const isDublicate = ({ name }, contacts) => {
   return Boolean(result);
 };
 
+const getContacts = async () => {
+  const { data } = await instanceContacts.get('/contacts');
+  return data;
+};
+
+const addContacts = async data => {
+  const { data: result } = await instanceContacts.post('/contacts', data);
+  return result;
+};
+
+const removeContacts = async id => {
+  const { data } = await instanceContacts.delete(`/contacts/${id}`);
+  return data;
+};
+
 export const fetchContacts = createAsyncThunk(
   'contacts/fetch',
   async (_, thunkApi) => {
     try {
-      const data = await api.getContacts();
+      const data = await getContacts();
       return data;
     } catch (e) {
       return thunkApi.rejectWithValue(e);
@@ -26,7 +41,7 @@ export const addContact = createAsyncThunk(
   'contacts/add',
   async (data, { rejectWithValue }) => {
     try {
-      const result = await api.addContacts(data);
+      const result = await addContacts(data);
       Notiflix.Report.success('Super !', ` New contact added!`, 'Close', {
         svgSize: '200px',
         titleFontSize: '24px',
@@ -68,7 +83,7 @@ export const removeContact = createAsyncThunk(
   'contacts/remove',
   async (id, { rejectWithValue }) => {
     try {
-      await api.removeContacts(id);
+      await removeContacts(id);
       return id;
     } catch (e) {
       return rejectWithValue(e);
