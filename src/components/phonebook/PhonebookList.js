@@ -8,11 +8,11 @@ import nogender from './img/nogender.png';
 export default function PhonebookList({ contactsList }) {
   function icon(gender) {
     if (gender === 'man') {
-      return <img src={man} alt="contact-icon" className="gender-icon" />;
+      return man;
     } else if (gender === 'woman') {
-      return <img src={woman} alt="contact-icon" className="gender-icon" />;
+      return woman;
     } else {
-      return <img src={nogender} alt="contact-icon" className="gender-icon" />;
+      return nogender;
     }
   }
   const removeMessage = () => {
@@ -31,7 +31,7 @@ export default function PhonebookList({ contactsList }) {
   const oneContacts = contactsList.map(({ id, name, number, gender }) => {
     return (
       <li key={id} className="list-item">
-        {icon(gender)}
+        <img src={icon(gender)} alt="contact-icon" className="gender-icon" />
         <p>
           {name}: {number}
           {''}
